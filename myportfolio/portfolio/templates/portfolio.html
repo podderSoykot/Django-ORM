@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ portfolio.user.username }}'s Portfolio</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+
+    <!-- Navbar -->
+    <nav class="p-4 shadow-md bg-white dark:bg-gray-800">
+        <div class="container mx-auto flex justify-between">
+            <h1 class="text-2xl font-bold">{{ portfolio.user.username }}</h1>
+            <button id="dark-mode-toggle" class="text-gray-700 dark:text-white">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <div class="container mx-auto text-center my-10">
+        <div class="max-w-lg mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+            <img src="{{ portfolio.profile_picture.url }}" alt="Profile Picture" class="w-32 h-32 mx-auto rounded-full border-4 border-blue-500">
+            <h2 class="text-3xl font-semibold mt-4">{{ portfolio.user.username }}</h2>
+            <p class="text-gray-500 dark:text-gray-300">{{ portfolio.bio }}</p>
+
+            <div class="mt-4 flex justify-center space-x-4">
+                {% if portfolio.github %}
+                    <a href="{{ portfolio.github }}" target="_blank" class="text-gray-700 dark:text-gray-200 text-xl hover:text-blue-500"><i class="fab fa-github"></i></a>
+                {% endif %}
+                {% if portfolio.linkedin %}
+                    <a href="{{ portfolio.linkedin }}" target="_blank" class="text-gray-700 dark:text-gray-200 text-xl hover:text-blue-500"><i class="fab fa-linkedin"></i></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Section -->
+    <div class="container mx-auto px-6">
+        <h3 class="text-2xl font-semibold text-center mb-6">Projects</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for project in portfolio.projects.all %}
+                <div class="glass-card p-6 rounded-lg shadow-lg">
+                    {% if project.image %}
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="rounded-lg w-full h-40 object-cover">
+                    {% endif %}
+                    <h4 class="text-xl font-semibold mt-3">{{ project.title }}</h4>
+                    <p class="text-gray-500 dark:text-gray-300">{{ project.description }}</p>
+                    <span class="inline-block bg-blue-500 text-white text-sm px-2 py-1 rounded mt-2">{{ project.technologies }}</span>
+                    {% if project.project_link %}
+                        <br><a href="{{ project.project_link }}" class="mt-2 text-blue-500 hover:underline">View Project</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        const toggleDarkMode = () => {
+            document.body.classList.toggle("dark");
+            localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+        };
+
+        document.getElementById("dark-mode-toggle").addEventListener("click", toggleDarkMode);
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark");
+        }
+    </script>
+
+</body>
+</html>
+
+
+
