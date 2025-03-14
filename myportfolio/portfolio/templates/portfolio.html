@@ -1,94 +1,105 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ portfolio.user.username }}'s Portfolio</title>
-
-    <!-- Tailwind CSS -->
+    <title>{{ portfolio.user.username }} - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- FontAwesome for Icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <style>
-        .glass-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+<body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
 
     <!-- Navbar -->
-    <nav class="p-4 shadow-md bg-white dark:bg-gray-800">
-        <div class="container mx-auto flex justify-between">
+    <nav class="bg-blue-600 text-white p-4 shadow-lg" data-aos="fade-down">
+        <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">{{ portfolio.user.username }}</h1>
-            <button id="dark-mode-toggle" class="text-gray-700 dark:text-white">
-                <i class="fas fa-moon"></i>
-            </button>
+            <ul class="flex space-x-6">
+                <li><a href="#about" class="hover:text-gray-300">About</a></li>
+                <li><a href="#projects" class="hover:text-gray-300">Projects</a></li>
+                <li><a href="#contact" class="hover:text-gray-300">Contact</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- Profile Section -->
-    <div class="container mx-auto text-center my-10">
-        <div class="max-w-lg mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-            <img src="{{ portfolio.profile_picture.url }}" alt="Profile Picture" class="w-32 h-32 mx-auto rounded-full border-4 border-blue-500">
-            <h2 class="text-3xl font-semibold mt-4">{{ portfolio.user.username }}</h2>
-            <p class="text-gray-500 dark:text-gray-300">{{ portfolio.bio }}</p>
+    <!-- Hero Section -->
+    <header class="text-center py-20 bg-blue-500 text-white" data-aos="zoom-in">
+        <h2 class="text-4xl font-bold">Welcome to My Portfolio</h2>
+        <p class="text-lg mt-2">Machine Learning Engineer | AI | Computer Vision</p>
+    </header>
 
-            <div class="mt-4 flex justify-center space-x-4">
-                {% if portfolio.github %}
-                    <a href="{{ portfolio.github }}" target="_blank" class="text-gray-700 dark:text-gray-200 text-xl hover:text-blue-500"><i class="fab fa-github"></i></a>
-                {% endif %}
-                {% if portfolio.linkedin %}
-                    <a href="{{ portfolio.linkedin }}" target="_blank" class="text-gray-700 dark:text-gray-200 text-xl hover:text-blue-500"><i class="fab fa-linkedin"></i></a>
-                {% endif %}
+    <!-- About Me Section -->
+    <section id="about" class="py-16 px-6 max-w-4xl mx-auto text-center" data-aos="fade-up">
+        <h2 class="text-3xl font-semibold mb-6">About Me</h2>
+        {% if portfolio.profile_picture %}
+            <div class="flex justify-center mb-6">
+                <img src="{{ portfolio.profile_picture.url }}" alt="Profile Picture" class="w-40 h-40 rounded-full shadow-lg">
             </div>
-        </div>
-    </div>
+        {% endif %}
+        <p class="text-lg text-gray-700 dark:text-gray-300">
+            {{ portfolio.bio }}
+        </p>
+    </section>
 
     <!-- Projects Section -->
-    <div class="container mx-auto px-6">
-        <h3 class="text-2xl font-semibold text-center mb-6">Projects</h3>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for project in portfolio.projects.all %}
-                <div class="glass-card p-6 rounded-lg shadow-lg">
-                    {% if project.image %}
-                        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="rounded-lg w-full h-40 object-cover">
-                    {% endif %}
-                    <h4 class="text-xl font-semibold mt-3">{{ project.title }}</h4>
-                    <p class="text-gray-500 dark:text-gray-300">{{ project.description }}</p>
-                    <span class="inline-block bg-blue-500 text-white text-sm px-2 py-1 rounded mt-2">{{ project.technologies }}</span>
-                    {% if project.project_link %}
-                        <br><a href="{{ project.project_link }}" class="mt-2 text-blue-500 hover:underline">View Project</a>
-                    {% endif %}
-                </div>
-            {% endfor %}
+    <section id="projects" class="py-16 bg-gray-200 dark:bg-gray-800" data-aos="fade-up">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-semibold text-center mb-10">Projects</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-6">
+                {% for project in portfolio.projects.all %}
+                    <div class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105" data-aos="flip-left">
+                        {% if project.image %}
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-40 object-cover rounded-md">
+                        {% endif %}
+                        <h3 class="text-xl font-bold mt-3">{{ project.title }}</h3>
+                        <p class="text-gray-600 dark:text-gray-300">{{ project.description|truncatechars:120 }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Tech: {{ project.technologies }}</p>
+                        {% if project.project_link %}
+                            <a href="{{ project.project_link }}" class="text-blue-500 mt-2 inline-block hover:underline">View Project →</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Dark Mode Toggle Script -->
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-6 max-w-lg mx-auto text-center" data-aos="fade-up">
+        <h2 class="text-3xl font-semibold mb-6">Contact Me</h2>
+        <div class="text-lg">
+            <p><strong>Phone:</strong> +8801734537627</p>
+            {% if portfolio.github %}
+                <p><strong>GitHub:</strong> <a href="{{ portfolio.github }}" class="text-blue-500 hover:underline" target="_blank">{{ portfolio.github }}</a></p>
+            {% endif %}
+            {% if portfolio.linkedin %}
+                <p><strong>LinkedIn:</strong> <a href="{{ portfolio.linkedin }}" class="text-blue-500 hover:underline" target="_blank">LinkedIn Profile</a></p>
+            {% endif %}
+        </div>
+        <div class="mt-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg" data-aos="flip-right">
+            <h4 class="text-xl font-semibold mb-4">Send me a Message</h4>
+            <form id="emailForm" class="space-y-4">
+                <input type="text" id="subject" placeholder="Subject" class="w-full p-2 border rounded-md" required>
+                <textarea id="body" rows="4" placeholder="Your message..." class="w-full p-2 border rounded-md" required></textarea>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">Send Email</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 bg-gray-800 text-white" data-aos="fade-up">
+        <p>&copy; 2025 {{ portfolio.user.username }} | All rights reserved.</p>
+    </footer>
+
     <script>
-        const toggleDarkMode = () => {
-            document.body.classList.toggle("dark");
-            localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
-        };
-
-        document.getElementById("dark-mode-toggle").addEventListener("click", toggleDarkMode);
-        if (localStorage.getItem("theme") === "dark") {
-            document.body.classList.add("dark");
-        }
+        AOS.init();
     </script>
-
 </body>
 </html>
-
-
 
