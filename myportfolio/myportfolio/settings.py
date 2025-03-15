@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+d3wqj!-48=2_)f!aq*4zw2od!#$1^iqh+qz-#9t^3#ong0emz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["Soykot_Podder.onrender.com","localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["SoykotPodder.onrender.com"]
 
 
 # Application definition
