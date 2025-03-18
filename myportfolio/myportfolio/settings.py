@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+d3wqj!-48=2_)f!aq*4zw2od!#$1^iqh+qz-#9t^3#ong0emz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["SoykotPodder.onrender.com"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -127,8 +127,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # add below lines
 import os
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Ensure STATIC_ROOT is set
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# If using STATICFILES_DIRS, make sure the directory exists
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'staticfiles'),
+]
